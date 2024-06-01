@@ -1,13 +1,12 @@
 import os
-from selene import browser
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from utils import attach
+from selene import Browser, Config
 from dotenv import load_dotenv
+from utils import attach
 
 DEFAULT_BROWSER_VERSION = "100.0"
-
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -15,19 +14,17 @@ def pytest_addoption(parser):
         default='100.0'
     )
 
-
 @pytest.fixture(scope='session', autouse=True)
 def load_env():
     load_dotenv()
 
-
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture(scope='function')
 def setup_browser(request):
     browser_version = request.config.getoption('--browser_version')
     browser_version = browser_version if browser_version != "" else DEFAULT_BROWSER_VERSION
     options = Options()
     selenoid_capabilities = {
-        "browserName": 'chrome',
+        "browserName": "chrome",
         "browserVersion": browser_version,
         "selenoid:options": {
             "enableVNC": True,
@@ -43,17 +40,12 @@ def setup_browser(request):
         command_executor=f"https://{login}:{password}@selenoid.autotests.cloud/wd/hub",
         options=options
     )
-
-    browser.config.base_url = 'https://demoqa.com'
-    browser.config.window_width = 1920
-    browser.config.window_height = 1080
-    browser.config.driver = driver
+    browser = Browser(Config(driver))
 
     yield browser
 
+    attach.add_html(browser)
     attach.add_screenshot(browser)
     attach.add_logs(browser)
-    attach.add_html(browser)
     attach.add_video(browser)
-
     browser.quit()

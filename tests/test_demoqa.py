@@ -4,7 +4,7 @@ from selene import browser, have
 
 def test_dynamic_steps():
     with allure.step("Открываем страницу формы"):
-        browser.open('/automation-practice-form')
+        browser.open('https://demoqa.com/automation-practice-form')
 
     with allure.step("Заполняем Имя, фамилию, email, номер телефона"):
         browser.element('#firstName').type('Piter')
@@ -21,3 +21,14 @@ def test_dynamic_steps():
 
     with allure.step("Выбираем хобби"):
         browser.all('.custom-checkbox').element_by(have.exact_text('Music')).click()
+
+    with allure.step("Отправляем форму"):
+        browser.element('#submit').press_enter()
+
+    with allure.step("Проверяем результат"):
+        browser.element('.table').should(have.text('Piter Parker'))
+        browser.element('.table').should(have.text('spaidermane@gmail.com'))
+        browser.element('.table').should(have.text('1234567890'))
+        browser.element('.table').should(have.text('Male'))
+        browser.element('.table').should(have.text('English'))
+        browser.element('.table').should(have.text('Music'))
