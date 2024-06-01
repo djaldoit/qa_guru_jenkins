@@ -21,12 +21,10 @@ selenoid_url = os.getenv("SELENOID_URL")
 
 @pytest.fixture(scope='function')
 def setup_browser(request):
-    browser_version = request.config.getoption('--browser_version')
-    browser_version = browser_version if browser_version != "" else DEFAULT_BROWSER_VERSION
     options = Options()
     selenoid_capabilities = {
         "browserName": "chrome",
-        "browserVersion": browser_version,
+        "browserVersion": "100.0",
         "selenoid:options": {
             "enableVNC": True,
             "enableVideo": True
