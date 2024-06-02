@@ -18,6 +18,9 @@ def test_dynamic_steps():
         browser.all('.custom-control-label').element_by(
             have.exact_text('Male')).click()
 
+    with allure.step("Скролим страницу"):
+        browser.execute_script("window.scrollBy(0, 500);")
+
     with allure.step("Выбираем дату рождения"):
         browser.element('#dateOfBirthInput').click()
         browser.element('.react-datepicker__month-select').type('May')
