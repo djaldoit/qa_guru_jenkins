@@ -6,7 +6,7 @@ from selene import browser, have
 
 def test_dynamic_steps():
     with allure.step("Открываем страницу формы"):
-        browser.open('https://demoqa.com/automation-practice-form')
+        browser.open('/automation-practice-form')
 
     with allure.step("Заполняем Имя, фамилию, email, номер телефона"):
         browser.element('#firstName').type('Piter')
