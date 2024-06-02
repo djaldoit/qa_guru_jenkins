@@ -48,7 +48,7 @@ def setup_browser(request):
 
     browser.config.driver = driver
 
-    browser.config.base_url = 'https://demoqa.com/'
+    browser.config.base_url = 'https://demoqa.com'
 
     yield browser
 
