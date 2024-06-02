@@ -1,9 +1,12 @@
 import os
+
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selene import Browser, Config
+
 from dotenv import load_dotenv
+from selene.support.shared import browser
+from selenium.webdriver.chrome.options import Options
+
 from utils import attach
 
 DEFAULT_BROWSER_VERSION = "100.0"
@@ -11,9 +14,7 @@ DEFAULT_BROWSER_VERSION = "100.0"
 
 def pytest_addoption(parser):
     parser.addoption(
-        '--browser_version',
-        default='100.0'
-    )
+        '--browser_version', default='100.0')
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -34,6 +35,7 @@ def setup_browser(request):
             "enableVideo": True
         }
     }
+
     options.capabilities.update(selenoid_capabilities)
 
     login = os.getenv('LOGIN')
@@ -43,7 +45,8 @@ def setup_browser(request):
         command_executor=f"https://{login}:{password}@selenoid.autotests.cloud/wd/hub",
         options=options
     )
-    browser = Browser(Config(driver))
+
+    browser.config.driver = driver
 
     yield browser
 
