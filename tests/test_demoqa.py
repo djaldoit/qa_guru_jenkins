@@ -34,7 +34,10 @@ def test_dynamic_steps():
         browser.all('.custom-checkbox').element_by(have.exact_text('Music')).click()
 
     with allure.step("Загружаем картинку"):
-        browser.element('#uploadPicture').send_keys(os.path.abspath('pictures/testPicture.jpg'))
+        browser.element('#uploadPicture').send_keys(
+            os.path.abspath(
+                os.path.join(os.path.dirname(__file__), 'pictures', 'testPicture.jpg')
+            ))
 
     with allure.step("Заполняем адрес"):
         browser.element('#currentAddress').type('Street, 1')
